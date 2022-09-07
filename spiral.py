@@ -32,11 +32,20 @@ def spiral(size):
 
 		if up:
 			coordinates[0] -=1
-			listas[coordinates[0]].append(i)
+			
 
 			if len(listas[coordinates[0]]) > len(listas):
 				listas.append([])
+			if coordinates[0] < 0:
+				listas.insert(0,[])
+				coordinates[0] = 0
 
+			listas[coordinates[0]].append(i)
+
+			if i == size:
+				while len(listas[coordinates[0]]) != len(listas[coordinates[0]+1]):
+					listas[coordinates[0]].insert(0,'')
+			
 			count += 1
 			if count == time_to_move:
 				up = False
@@ -46,6 +55,10 @@ def spiral(size):
 				continue
 		if left:
 			listas[coordinates[0]].insert(0,i)
+
+			if i == size:
+				while len(listas[coordinates[0]]) != len(listas[coordinates[0]+1]):
+					listas[coordinates[0]].insert(0,'')
 
 			if len(listas[coordinates[0]]) > len(listas):
 				listas.append([])
@@ -61,6 +74,12 @@ def spiral(size):
 			coordinates[0] +=1
 			listas[coordinates[0]].insert(0,i)
 
+			if i == size:
+				coordinates[0] +=1
+				for row in listas[coordinates[0]:]:
+					index = listas.index(row)
+					listas[index].insert(0,'')
+
 			if len(listas[coordinates[0]]) > len(listas):
 				listas.append([])
 
@@ -72,10 +91,19 @@ def spiral(size):
 				time_to_move +=1
 				continue
 
+			# complete row
+	
 	return listas
 	
 
-for i in spiral(size):
+
+spiral = spiral(size)
+
+
+
+# print finals results
+
+for i in spiral:
 	for j in i:
 		print(str(j).rjust(2), end=' ')
 	print()
